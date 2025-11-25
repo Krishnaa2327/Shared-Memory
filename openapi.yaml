@@ -1,0 +1,166 @@
+openapi: 3.1.0
+info:
+  title: Shared Memory API
+  description: Store and retrieve memories across AI assistants
+  version: 1.0.0
+servers:
+  - url: https://uneconomical-frederic-lovelessly.ngrok-free.dev
+    description: Production server
+
+paths:
+  /memory/add:
+    post:
+      operationId: addMemory
+      summary: Add a new memory
+      description: Store a new memory for a specific project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - project
+                - content
+              properties:
+                project:
+                  type: string
+                  description: Project identifier (e.g., 'chatgpt', 'claude', 'cursor')
+                content:
+                  type: string
+                  description: The memory content to store
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  description: Optional tags for categorization
+      responses:
+        '200':
+          description: Memory added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  memory:
+                    type: object
+
+  /memory/search:
+    get:
+      operationId: searchMemory
+      summary: Search memories
+      description: Search for memories by query string
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+          description: Maximum number of results
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  count:
+                    type: integer
+                  memories:
+                    type: array
+                    items:
+                      type: object
+
+  /memory/list:
+    get:
+      operationId: listMemories
+      summary: List memories by project
+      description: List all memories, optionally filtered by project
+      parameters:
+        - name: project
+          in: query
+          schema:
+            type: string
+          description: Filter by project name
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+          description: Maximum number of results
+      responses:
+        '200':
+          description: List of memories
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  count:
+                    type: integer
+                  memories:
+                    type: array
+
+  /memory/update/{memory_id}:
+    put:
+      operationId: updateMemory
+      summary: Update a memory
+      description: Update an existing memory by ID
+      parameters:
+        - name: memory_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Memory ID to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: New content
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  description: New tags
+      responses:
+        '200':
+          description: Memory updated
+        '404':
+          description: Memory not found
+
+  /memory/delete/{memory_id}:
+    delete:
+      operationId: deleteMemory
+      summary: Delete a memory
+      description: Delete an existing memory by ID
+      parameters:
+        - name: memory_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Memory ID to delete
+      responses:
+        '200':
+          description: Memory deleted
+        '404':
+          description: Memory not found

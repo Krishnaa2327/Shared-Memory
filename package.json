@@ -1,0 +1,11 @@
+{
+  "name": "mcp-shared-memory-client",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "mcp-memory": "./client.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}
