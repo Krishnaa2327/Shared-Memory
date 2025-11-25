@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: shared-memory-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python backend.py
+    disk:
+      name: memory-storage
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: DATABASE_PATH
+        value: /data/memories.db
+      - key: PYTHON_VERSION
+        value: 3.11.0
