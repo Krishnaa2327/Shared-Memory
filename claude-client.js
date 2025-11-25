@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000";
+// const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://shared-memory.onrender.com";
 
 console.error("MCP Shared Memory Server starting...");
 
